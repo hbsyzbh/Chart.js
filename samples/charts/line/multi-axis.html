@@ -43,13 +43,13 @@
 				backgroundColor: window.chartColors.blue,
 				fill: false,
 				data: [
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor()
+					randomScalingFactor(0.0000001, 100000000),
+					randomScalingFactor(0.0000001),
+					randomScalingFactor(0.0000001),
+					randomScalingFactor(0.0000001, 100000000),
+					randomScalingFactor(0.0000001),
+					randomScalingFactor(0.0000001, 100000000),
+					randomScalingFactor(0.0000001)
 				],
 				yAxisID: 'y1'
 			}]
@@ -75,10 +75,10 @@
 							position: 'left',
 						},
 						y1: {
-							type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+							type: 'logarithmic', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
 							display: true,
 							position: 'right',
-
+							humanReadable: true,
 							// grid line settings
 							gridLines: {
 								drawOnChartArea: false, // only want the grid lines for one axis to show up
@@ -92,7 +92,7 @@
 		document.getElementById('randomizeData').addEventListener('click', function() {
 			lineChartData.datasets.forEach(function(dataset) {
 				dataset.data = dataset.data.map(function() {
-					return randomScalingFactor();
+					return randomScalingFactor(0.0000001, 100000000);
 				});
 			});
 

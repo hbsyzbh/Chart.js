@@ -130,8 +130,8 @@ window.chartColors = {
 	};
 
 	// DEPRECATED
-	window.randomScalingFactor = function() {
-		return Math.round(Samples.utils.rand(-100, 100));
+	window.randomScalingFactor = function(min = -100, max = 100) {
+		return Math.round(Samples.utils.rand(min, max));
 	};
 
 	// INITIALIZATION

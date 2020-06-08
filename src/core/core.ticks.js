@@ -1,6 +1,34 @@
 import {isArray} from '../helpers/helpers.core';
 import {log10} from '../helpers/helpers.math';
 
+function getHumanReadableStr(tickValue, type) {
+	const humanReadable = [
+		{value: 1e+3, name: 'K'},
+		{value: 1e+6, name: 'M'},
+		{value: 1e+9, name: 'G'},
+		{value: 1e+12, name: 'T'}
+	];
+
+	const absTickValue = Math.abs(tickValue);
+	if (absTickValue >= 1000) {
+		for (let i = humanReadable.length - 1; i >= 0; i--) {
+			if (absTickValue >= humanReadable[i].value) {
+				let absResult = '';
+				if (type === 'linear') {
+					absResult = (absTickValue / humanReadable[i].value).toFixed(1) + humanReadable[i].name;
+				} else {
+					absResult = Math.floor(absTickValue / humanReadable[i].value) + humanReadable[i].name;
+				}
+
+				if (tickValue < 0) {
+					return '-' + absResult;
+				}
+				return absResult;
+			}
+		}
+	}
+	return '';
+}
 /**
  * Namespace to hold formatters for different types of ticks
  * @namespace Chart.Ticks.formatters
@@ -48,6 +76,11 @@ const formatters = {
 			let numExponential = Math.floor(logTick) - Math.floor(logDelta);
 			numExponential = Math.max(Math.min(numExponential, 20), 0);
 			return tickValue.toExponential(numExponential);
+		}
+
+		const humanReadableStr = getHumanReadableStr(tickValue, this.options.type);
+		if ((this.options.humanReadable === true) && (humanReadableStr !== '')) {
+			return humanReadableStr;
 		}
 
 		let numDecimal = -1 * Math.floor(logDelta);

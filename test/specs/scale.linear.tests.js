@@ -199,6 +199,38 @@ describe('Linear Scale', function() {
 		expect(chart.scales.y.max).toBe(80);
 	});
 
+	it('Should correctly shown humanReadable Strings', function() {
+		var chart = window.acquireChart({
+			type: 'bar',
+			data: {
+				datasets: [{
+					yAxisID: 'y',
+					data: ['1.1e+3', '1.3e+3', '1.8e+6', '2.3e+9', '2e+12', '1e+12']
+				}, {
+					yAxisID: 'y2',
+					data: ['1.1e+3', '-1.3e+3', '1.8e+3', '-2.3e+3', '2e+3', '-1e+3']
+				}],
+				labels: ['a', 'b', 'c', 'd', 'e', 'f']
+			},
+			options: {
+				scales: {
+					y: {
+						position: 'right',
+						type: 'logarithmic',
+						humanReadable: true
+					},
+					y2: {
+						type: 'linear',
+						humanReadable: true
+					}
+				}
+			}
+		});
+
+		expect(getLabels(chart.scales.y)).toEqual(['1T', '', '', '100G', '', '', '10G', '', '', '1G', '', '', '100M', '', '', '10M', '', '', '1M', '', '', '100K', '', '', '10K', '', '', '1K']);
+		expect(getLabels(chart.scales.y2)).toEqual(['2.0K', '1.5K', '1.0K', '500', '0', '-500', '-1.0K', '-1.5K', '-2.0K', '-2.5K']);
+	});
+
 	it('Should correctly determine the max & min data values ignoring data that is NaN', function() {
 		var chart = window.acquireChart({
 			type: 'bar',
